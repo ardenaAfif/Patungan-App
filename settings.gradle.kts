@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Split Bill"
+rootProject.name = "Patungan"
 include(":app")
