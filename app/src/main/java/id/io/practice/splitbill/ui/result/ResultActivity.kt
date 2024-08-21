@@ -3,30 +3,69 @@ package id.io.practice.splitbill.ui.result
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
+import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import id.io.practice.splitbill.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import id.io.practice.splitbill.adapter.RincianPatunganAdapter
 import id.io.practice.splitbill.databinding.ActivityResultBinding
+import id.io.practice.splitbill.response.OrderItem
+import id.io.practice.splitbill.response.PatunganItemResponse
+import kotlinx.serialization.json.Json
 
 class ResultActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityResultBinding
+    private lateinit var rincianAdapter: RincianPatunganAdapter
+    private val listRincian = mutableListOf<OrderItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val imageUri = intent.getStringExtra(EXTRA_IMAGE_URI)?.let { Uri.parse(it) }
-        imageUri?.let {
-            Log.d("Image URI", "showImage: $it")
-//            binding.resultImage.setImageURI(it)
+        rvSetup()
+        retrieveData()
+        btnListener()
+
+    }
+
+    private fun btnListener() {
+        binding.apply {
+            btnBack.setOnClickListener {
+                onBackPressed()
+            }
+            btnPreviewLanjutkan.setOnClickListener {
+
+            }
+        }
+    }
+
+    private fun retrieveData() {
+        val jsonResponse = intent.getStringExtra(EXTRA_RESULT)
+
+        // Parsing JSON dan update RecyclerView
+        jsonResponse?.let {
+            val response = Json.decodeFromString<PatunganItemResponse>(it)
+            listRincian.addAll(response.listOrder)
+            rincianAdapter.notifyDataSetChanged()
+
+            binding.apply {
+                pajakPesanan.text = response.taxFee
+                servicePesanan.text = response.serviceCharge
+                totalBayarPesanan.text = "Rp ${response.totalPrice}"
+            }
+//        val imageUri = intent.getStringExtra(EXTRA_IMAGE_URI)?.let { Uri.parse(it) }
+        }
+    }
+
+    private fun rvSetup() {
+        rincianAdapter = RincianPatunganAdapter(listRincian)
+        binding.rvRincianPatungan.apply {
+            layoutManager = LinearLayoutManager(this@ResultActivity)
+            adapter = rincianAdapter
         }
 
-        val detectedText = intent.getStringExtra(EXTRA_RESULT)
-        binding.resultText.text = detectedText ?: "Tidak ada teks yang terdeteksi."
     }
 
 

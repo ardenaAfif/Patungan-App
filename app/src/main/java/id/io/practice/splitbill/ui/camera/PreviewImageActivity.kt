@@ -75,6 +75,13 @@ class PreviewImageActivity : AppCompatActivity() {
                 binding.progressIndicator.visibility = View.GONE
                 val detectedText: String = visionText.text
 
+            /* ===== TEXT RECOGNITION =====
+                val intent = Intent(this@PreviewImageActivity, ResultActivity::class.java)
+                intent.putExtra(ResultActivity.EXTRA_IMAGE_URI, uri.toString())
+                intent.putExtra(ResultActivity.EXTRA_RESULT, detectedText)
+                startActivity(intent)
+            */
+
                 // Panggil fungsi untuk mengirim hasil ke Gemini API
                 CoroutineScope(Dispatchers.IO).launch {
                     val jsonResponse = generateJson(detectedText)
@@ -110,7 +117,6 @@ class PreviewImageActivity : AppCompatActivity() {
         val response = generativeModel.generateContent(prompt)
         return response.text ?: "{}"  // Return JSON or empty JSON object
     }
-
 
     override fun onBackPressed() {
         super.onBackPressed()
