@@ -71,10 +71,13 @@ class CameraActivity : AppCompatActivity() {
     private val launcherGallery = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
+        val partnerList = intent.getSerializableExtra("EXTRA_PARTNER_LIST") as? ArrayList<Pair<String, Int>>
         if (uri != null) {
             currentImageUri = uri
             val intent = Intent(this, PreviewImageActivity::class.java)
             intent.putExtra("imageUri", uri.toString())
+            intent.putExtra("EXTRA_PARTNER_LIST", partnerList)
+            Log.d("CameraActivity", "Partner list: $partnerList")
             startActivity(intent)
         } else {
             Log.d("Photo Picker", "No media selected")

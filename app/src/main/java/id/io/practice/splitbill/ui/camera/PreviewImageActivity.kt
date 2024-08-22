@@ -3,6 +3,7 @@ package id.io.practice.splitbill.ui.camera
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -85,10 +86,14 @@ class PreviewImageActivity : AppCompatActivity() {
                 // Panggil fungsi untuk mengirim hasil ke Gemini API
                 CoroutineScope(Dispatchers.IO).launch {
                     val jsonResponse = generateJson(detectedText)
+                    val partnerList = intent.getSerializableExtra("EXTRA_PARTNER_LIST") as? ArrayList<Pair<String, Int>>
                     withContext(Dispatchers.Main) {
                         val intent = Intent(this@PreviewImageActivity, ResultActivity::class.java)
                         intent.putExtra(ResultActivity.EXTRA_IMAGE_URI, uri.toString())
                         intent.putExtra(ResultActivity.EXTRA_RESULT, jsonResponse)
+
+                        Log.d("PreviewImageActivity", "Partner list: $partnerList")
+                        intent.putExtra("EXTRA_PARTNER_LIST", partnerList)
                         startActivity(intent)
                     }
                 }

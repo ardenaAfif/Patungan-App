@@ -39,6 +39,9 @@ class ResultActivity : AppCompatActivity() {
             }
             btnPreviewLanjutkan.setOnClickListener {
                 Intent(this@ResultActivity, PatunganActivity::class.java).also {
+                    val partnerList = intent.getSerializableExtra("EXTRA_PARTNER_LIST") as? ArrayList<Pair<String, Int>>
+                    Log.d("ResultActivity", "Partner list: $partnerList")
+                    it.putExtra("EXTRA_PARTNER_LIST", partnerList)
                     startActivity(it)
                 }
             }

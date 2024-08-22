@@ -19,6 +19,7 @@ import id.io.practice.splitbill.adapter.PartnerAdapter
 import id.io.practice.splitbill.adapter.PartnerListDialogAdapter
 import id.io.practice.splitbill.databinding.ActivityMainBinding
 import id.io.practice.splitbill.ui.camera.CameraActivity
+import id.io.practice.splitbill.ui.patungan.PatunganActivity
 import java.util.Calendar
 import kotlin.random.Random
 
@@ -140,6 +141,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Silakan tambahkan teman patungan terlebih dahulu", Toast.LENGTH_SHORT).show()
             } else {
                 val intent = Intent(this, CameraActivity::class.java)
+                intent.putExtra("EXTRA_PARTNER_LIST", partnerList as ArrayList<Pair<String, Int>>)
                 startActivity(intent)
             }
         }
