@@ -136,8 +136,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun addSplitBill() {
         binding.cardBuatPatunganBaru.setOnClickListener {
-            val intent = Intent(this, CameraActivity::class.java)
-            startActivity(intent)
+            if (partnerList.isEmpty()) {
+                Toast.makeText(this, "Silakan tambahkan teman patungan terlebih dahulu", Toast.LENGTH_SHORT).show()
+            } else {
+                val intent = Intent(this, CameraActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

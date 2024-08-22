@@ -1,5 +1,6 @@
 package id.io.practice.splitbill.ui.result
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import id.io.practice.splitbill.adapter.RincianPatunganAdapter
 import id.io.practice.splitbill.databinding.ActivityResultBinding
 import id.io.practice.splitbill.response.OrderItem
 import id.io.practice.splitbill.response.PatunganItemResponse
+import id.io.practice.splitbill.ui.patungan.PatunganActivity
 import kotlinx.serialization.json.Json
 
 class ResultActivity : AppCompatActivity() {
@@ -36,7 +38,9 @@ class ResultActivity : AppCompatActivity() {
                 onBackPressed()
             }
             btnPreviewLanjutkan.setOnClickListener {
-
+                Intent(this@ResultActivity, PatunganActivity::class.java).also {
+                    startActivity(it)
+                }
             }
         }
     }
@@ -51,8 +55,9 @@ class ResultActivity : AppCompatActivity() {
             rincianAdapter.notifyDataSetChanged()
 
             binding.apply {
-                pajakPesanan.text = response.taxFee
-                servicePesanan.text = response.serviceCharge
+                pajakPesanan.text = response.taxFee ?: "-"
+                servicePesanan.text = response.serviceCharge ?: "-"
+                diskonPesanan.text = if (response.discount != null) "- ${response.discount}" else "-"
                 totalBayarPesanan.text = "Rp ${response.totalPrice}"
             }
 //        val imageUri = intent.getStringExtra(EXTRA_IMAGE_URI)?.let { Uri.parse(it) }

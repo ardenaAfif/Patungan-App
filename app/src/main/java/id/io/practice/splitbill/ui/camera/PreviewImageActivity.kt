@@ -113,7 +113,7 @@ class PreviewImageActivity : AppCompatActivity() {
             generationConfig = config
         )
         val prompt =
-            "Find the number of order from each item with price from this raw text: $detectedText using this JSON Schema: Response = {\"taxFee\": str,\"serviceCharge\":str, \"totalPrice\":str, \"listOrder\":List[{\"quantity\":str, \"name\":str, \"price\":str}]} Return a 'ResponseItem'"
+            "Find the number of order from each item with price from this raw text: $detectedText using this JSON Schema: Response = {\"taxFee\": str,\"serviceCharge\":str, \"discount\":str, \"totalPrice\":str, \"listOrder\":List[{\"quantity\":str, \"name\":str, \"price\":str}]} Return a 'ResponseItem'"
         val response = generativeModel.generateContent(prompt)
         return response.text ?: "{}"  // Return JSON or empty JSON object
     }

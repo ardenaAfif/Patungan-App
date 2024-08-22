@@ -116,9 +116,9 @@
                     android:layout_marginEnd="4dp"
                     android:layout_weight=".7"
                     android:ellipsize="end"
+                    android:text="Servis"
                     android:textColor="@color/primaryColor"
-                    android:textSize="16sp"
-                    android:text="Servis" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/servicePesanan"
@@ -131,6 +131,36 @@
                     android:textSize="16sp"
                     android:textStyle="italic"
                     tools:text="150.000" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight=".7"
+                    android:ellipsize="end"
+                    android:text="Diskon"
+                    android:textColor="@color/primaryColor"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/diskonPesanan"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".3"
+                    android:gravity="end"
+                    android:textColor="#FF0000"
+                    android:layout_marginEnd="12dp"
+                    android:textSize="16sp"
+                    android:textStyle="italic"
+                    tools:text="-150.000" />
             </LinearLayout>
 
             <LinearLayout
