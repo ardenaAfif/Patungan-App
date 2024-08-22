@@ -14,6 +14,9 @@
         android:layout_height="45dp"
         android:contentDescription="Profile Image"
         android:src="@drawable/profile_1"
+        android:paddingBottom="4dp"
+        android:paddingTop="3dp"
+        android:background="@drawable/profile_image_stroke"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
