@@ -3,6 +3,7 @@ package id.io.practice.splitbill.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import id.io.practice.splitbill.R
@@ -12,7 +13,7 @@ class RincianPatunganAdapter(private val listRincian: List<OrderItem>) :
     RecyclerView.Adapter<RincianPatunganAdapter.RincianViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RincianViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_rincian_patungan, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_rincian_pembagian_patungan, parent, false)
         return RincianViewHolder(view)
     }
 
@@ -24,9 +25,10 @@ class RincianPatunganAdapter(private val listRincian: List<OrderItem>) :
     override fun getItemCount(): Int = listRincian.size
 
     class RincianViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val namaPesanan: TextView = itemView.findViewById(R.id.namaPesanan)
-        private val jumlahPesanan: TextView = itemView.findViewById(R.id.jumlahPesanan)
-        private val hargaPesanan: TextView = itemView.findViewById(R.id.hargaPesanan)
+        private val namaPesanan: TextView = itemView.findViewById(R.id.namaPesananSplitBill)
+        private val jumlahPesanan: TextView = itemView.findViewById(R.id.jumlahPesananSplitBill)
+        private val hargaPesanan: TextView = itemView.findViewById(R.id.hargaPesananSplitBill)
+        private val cbSplitBill: CheckBox = itemView.findViewById(R.id.checkBoxSplitBill)
 
         fun bind(rincian: OrderItem) {
             namaPesanan.text = rincian.name

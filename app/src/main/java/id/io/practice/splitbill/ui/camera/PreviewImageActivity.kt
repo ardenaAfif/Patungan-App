@@ -127,5 +127,4 @@ class PreviewImageActivity : AppCompatActivity() {
         super.onBackPressed()
     }
 
-
 }

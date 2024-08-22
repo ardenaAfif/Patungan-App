@@ -19,7 +19,6 @@ import id.io.practice.splitbill.adapter.PartnerAdapter
 import id.io.practice.splitbill.adapter.PartnerListDialogAdapter
 import id.io.practice.splitbill.databinding.ActivityMainBinding
 import id.io.practice.splitbill.ui.camera.CameraActivity
-import id.io.practice.splitbill.ui.patungan.PatunganActivity
 import java.util.Calendar
 import kotlin.random.Random
 

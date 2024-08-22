@@ -1,54 +1,65 @@
 package id.io.practice.splitbill.ui.result
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import id.io.practice.splitbill.adapter.PartnerRincianAdapter
 import id.io.practice.splitbill.adapter.RincianPatunganAdapter
 import id.io.practice.splitbill.databinding.ActivityResultBinding
 import id.io.practice.splitbill.response.OrderItem
 import id.io.practice.splitbill.response.PatunganItemResponse
-import id.io.practice.splitbill.ui.patungan.PatunganActivity
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class ResultActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityResultBinding
+
+    private lateinit var partnerAdapter: PartnerRincianAdapter
     private lateinit var rincianAdapter: RincianPatunganAdapter
-    private val listRincian = mutableListOf<OrderItem>()
+
+    private val listRincian = ArrayList<OrderItem>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityResultBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        rvSetup()
-        retrieveData()
+        rvRincianSetup()
+        retrievePartnerData()
+        retrieveMenuData()
         btnListener()
-
     }
 
     private fun btnListener() {
         binding.apply {
-            btnBack.setOnClickListener {
+            toolbar.navBack.setOnClickListener {
                 onBackPressed()
             }
-            btnPreviewLanjutkan.setOnClickListener {
-                Intent(this@ResultActivity, PatunganActivity::class.java).also {
-                    val partnerList = intent.getSerializableExtra("EXTRA_PARTNER_LIST") as? ArrayList<Pair<String, Int>>
-                    Log.d("ResultActivity", "Partner list: $partnerList")
-                    it.putExtra("EXTRA_PARTNER_LIST", partnerList)
-                    startActivity(it)
-                }
+            btnHitung.setOnClickListener {
+//                Intent(this@ResultActivity, PatunganActivity::class.java).also {
+//
+//                    startActivity(it)
+//                }
             }
         }
     }
 
-    private fun retrieveData() {
+    private fun retrievePartnerData() {
+        // Retrive partner data
+        val partnerList =
+            intent.getSerializableExtra("EXTRA_PARTNER_LIST") as? ArrayList<Pair<String, Int>>
+        if (partnerList != null) {
+            setupPartnerBillRv(partnerList)
+        } else {
+            // Tangani jika data null
+            Log.e("PatunganActivity", "Partner list tidak ditemukan")
+        }
+    }
+
+    private fun retrieveMenuData() {
         val jsonResponse = intent.getStringExtra(EXTRA_RESULT)
 
         // Parsing JSON dan update RecyclerView
@@ -63,19 +74,25 @@ class ResultActivity : AppCompatActivity() {
                 diskonPesanan.text = if (response.discount != null) "- ${response.discount}" else "-"
                 totalBayarPesanan.text = "Rp ${response.totalPrice}"
             }
-//        val imageUri = intent.getStringExtra(EXTRA_IMAGE_URI)?.let { Uri.parse(it) }
         }
     }
 
-    private fun rvSetup() {
+    private fun rvRincianSetup() {
         rincianAdapter = RincianPatunganAdapter(listRincian)
         binding.rvRincianPatungan.apply {
             layoutManager = LinearLayoutManager(this@ResultActivity)
             adapter = rincianAdapter
         }
-
     }
 
+    private fun setupPartnerBillRv(partnerList: ArrayList<Pair<String, Int>>) {
+        partnerAdapter = PartnerRincianAdapter(partnerList)
+        binding.rvPartnersBill.apply {
+            layoutManager =
+                LinearLayoutManager(this@ResultActivity, LinearLayoutManager.HORIZONTAL, false)
+            adapter = partnerAdapter
+        }
+    }
 
     companion object {
         const val EXTRA_IMAGE_URI = "extra_image_uri"
