@@ -1,16 +1,14 @@
 package id.io.practice.splitbill.ui.result
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.io.practice.splitbill.adapter.PartnerRincianAdapter
-import id.io.practice.splitbill.adapter.RincianPatunganAdapter
+import id.io.practice.splitbill.adapter.RincianPembagianPatunganAdapter
 import id.io.practice.splitbill.databinding.ActivityResultBinding
 import id.io.practice.splitbill.response.OrderItem
 import id.io.practice.splitbill.response.PatunganItemResponse
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class ResultActivity : AppCompatActivity() {
@@ -18,9 +16,10 @@ class ResultActivity : AppCompatActivity() {
     private lateinit var binding: ActivityResultBinding
 
     private lateinit var partnerAdapter: PartnerRincianAdapter
-    private lateinit var rincianAdapter: RincianPatunganAdapter
+    private lateinit var rincianAdapter: RincianPembagianPatunganAdapter
 
     private val listRincian = ArrayList<OrderItem>()
+    private val selectedItemsByPartner = mutableMapOf<Int, MutableList<OrderItem>>() // Map untuk menyimpan selected items berdasarkan partner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +48,7 @@ class ResultActivity : AppCompatActivity() {
 
     private fun retrievePartnerData() {
         // Retrive partner data
-        val partnerList =
-            intent.getSerializableExtra("EXTRA_PARTNER_LIST") as? ArrayList<Pair<String, Int>>
+        val partnerList = intent.getSerializableExtra("EXTRA_PARTNER_LIST") as? ArrayList<Pair<String, Int>>
         if (partnerList != null) {
             setupPartnerBillRv(partnerList)
         } else {
@@ -78,7 +76,7 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private fun rvRincianSetup() {
-        rincianAdapter = RincianPatunganAdapter(listRincian)
+        rincianAdapter = RincianPembagianPatunganAdapter(listRincian, mutableListOf())
         binding.rvRincianPatungan.apply {
             layoutManager = LinearLayoutManager(this@ResultActivity)
             adapter = rincianAdapter
@@ -86,10 +84,13 @@ class ResultActivity : AppCompatActivity() {
     }
 
     private fun setupPartnerBillRv(partnerList: ArrayList<Pair<String, Int>>) {
-        partnerAdapter = PartnerRincianAdapter(partnerList)
+        partnerAdapter = PartnerRincianAdapter(partnerList) { position ->
+            // Update adapter with selectedItems specific to the selected partner
+            rincianAdapter = RincianPembagianPatunganAdapter(listRincian, selectedItemsByPartner.getOrPut(position) { mutableListOf() })
+            binding.rvRincianPatungan.adapter = rincianAdapter
+        }
         binding.rvPartnersBill.apply {
-            layoutManager =
-                LinearLayoutManager(this@ResultActivity, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(this@ResultActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = partnerAdapter
         }
     }

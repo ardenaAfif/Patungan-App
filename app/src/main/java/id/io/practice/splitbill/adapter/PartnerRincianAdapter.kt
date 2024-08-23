@@ -10,10 +10,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import id.io.practice.splitbill.R
 
-class PartnerRincianAdapter(private val partnerList: List<Pair<String, Int>>) :
-    RecyclerView.Adapter<PartnerRincianAdapter.PartnerViewHolder>() {
+class PartnerRincianAdapter(
+    private val partnerList: List<Pair<String, Int>>,
+    private val onPartnerSelected: (Int) -> Unit // Callback untuk partner terpilih
+) : RecyclerView.Adapter<PartnerRincianAdapter.PartnerViewHolder>() {
 
-    private var selectedPosition: Int = -1 // Track selected position
+    private var selectedPosition: Int = 0 // Track selected position
 
     inner class PartnerViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val profileImage: ImageView = itemView.findViewById(R.id.profilePatungan)
@@ -34,6 +36,7 @@ class PartnerRincianAdapter(private val partnerList: List<Pair<String, Int>>) :
 
             itemView.setOnClickListener {
                 selectedPosition = position
+                onPartnerSelected(position)
                 notifyDataSetChanged() // Refresh RecyclerView to update UI
             }
         }

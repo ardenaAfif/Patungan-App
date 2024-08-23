@@ -105,11 +105,11 @@ class MainActivity : AppCompatActivity() {
 
         btnAddPartner.setOnClickListener {
             val name = etPartnerName.text.toString().trim()
-            if (name.isNotEmpty()) {
+            if (name.isEmpty()) {
+                Toast.makeText(this, "Nama teman patungan tidak boleh kosong", Toast.LENGTH_SHORT).show()
+            } else {
                 addPartner(name)
                 dialog.dismiss()
-            } else {
-                Toast.makeText(this, "Nama teman patungan tidak boleh kosong", Toast.LENGTH_SHORT).show()
             }
         }
         dialog.show()
@@ -138,6 +138,8 @@ class MainActivity : AppCompatActivity() {
         binding.cardBuatPatunganBaru.setOnClickListener {
             if (partnerList.isEmpty()) {
                 Toast.makeText(this, "Silakan tambahkan teman patungan terlebih dahulu", Toast.LENGTH_SHORT).show()
+            } else if (partnerList.size < 2) {
+                Toast.makeText(this, "Teman patungan minimal 2 orang", Toast.LENGTH_SHORT).show()
             } else {
                 val intent = Intent(this, CameraActivity::class.java)
                 intent.putExtra("EXTRA_PARTNER_LIST", partnerList as ArrayList<Pair<String, Int>>)
